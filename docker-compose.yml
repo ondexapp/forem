@@ -1,7 +1,7 @@
 version: "3"
 services:
   rails:
-    image: quay.io/forem/forem:development
+    image: quay.io/forem/forem:production
     container_name: forem_rails
     user: root
     ports:
@@ -13,7 +13,7 @@ services:
       - yarn
       - testdb
     environment:
-      RAILS_ENV: development
+      RAILS_ENV: production
       DATABASE_URL: postgresql://forem:forem@db:5432/PracticalDeveloper_development
       DATABASE_URL_TEST: postgresql://forem:forem@testdb:5432/Forem_test
       REDIS_SESSIONS_URL: redis://redis:6379
@@ -31,7 +31,7 @@ services:
     command: [ "bash", "-c", "./scripts/entrypoint.sh bootstrap && bundle exec rails server -b 0.0.0.0 -p 3000"]
 
   bundle:
-    image: quay.io/forem/forem:development
+    image: quay.io/forem/forem:production
     container_name: forem_bundle
     user: root
     environment:
@@ -45,7 +45,7 @@ services:
     command: ["./scripts/bundle.sh"]
 
   yarn:
-    image: quay.io/forem/forem:development
+    image: quay.io/forem/forem:production
     container_name: forem_yarn
     user: root
     environment:
@@ -59,7 +59,7 @@ services:
     command: yarn install --dev
 
   webpacker:
-    image: quay.io/forem/forem:development
+    image: quay.io/forem/forem:production
     container_name: forem_webpacker
     user: root
     depends_on:
@@ -67,7 +67,7 @@ services:
       - rails
       - yarn
     environment:
-      RAILS_ENV: development
+      RAILS_ENV: production
       REDIS_SESSIONS_URL: redis://redis:6379
       REDIS_SIDEKIQ_URL: redis://redis:6379
       REDIS_URL: redis://redis:6379
@@ -78,7 +78,7 @@ services:
     command: ["./bin/webpack-dev-server"]
 
   seed:
-    image: quay.io/forem/forem:development
+    image: quay.io/forem/forem:production
     container_name: forem_seed
     user: root
     depends_on:
@@ -97,7 +97,7 @@ services:
     command: ["bundle", "exec", "rake","db:seed"]
 
   sidekiq:
-    image: quay.io/forem/forem:development
+    image: quay.io/forem/forem:production
     container_name: forem_sidekiq
     user: root
     depends_on:
@@ -105,7 +105,7 @@ services:
       - redis
       - db
     environment:
-      RAILS_ENV: development
+      RAILS_ENV: production
       REDIS_SESSIONS_URL: redis://redis:6379
       REDIS_SIDEKIQ_URL: redis://redis:6379
       REDIS_URL: redis://redis:6379
